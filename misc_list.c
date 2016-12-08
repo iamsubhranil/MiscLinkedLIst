@@ -24,7 +24,6 @@ void main(){
 	struct node_type_int *intnode;
 	struct node_type_real *realnode;
 	struct node_type_char *charnode;
-	printf("\nInitializing pointers..\n");
 	while(conti){
 		printf("Which type of node do you want to insert ?\nEnter 1 for integer\n2 for real\n3 for character : ");
 		scanf("%d",&ntype);
