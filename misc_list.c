@@ -18,14 +18,52 @@ struct node_type_char {
 	long nextaddress;
 };
 
-void main(){
-	int conti = 1,ntype,*flag;
-	long *start=NULL, *nextaddress = NULL;
+void printlist(long *nextaddress){
+	struct node_type_int *intnode;
+	struct node_type_real *realnode;
+	struct node_type_char *charnode;
+	int *flag;
+	printf("\nStarting traversal from address %ld\n",(long)nextaddress);
+	while(nextaddress!=0){
+		flag = (int *)nextaddress;
+		if((*flag)==1){
+			printf("\nNode is int\n");
+			intnode = (struct node_type_int *)nextaddress;
+			printf("Data : %ld",intnode->data);
+			nextaddress = (long *)intnode->nextaddress;
+			printf("\nNext address : %ld\n",intnode->nextaddress);
+		}
+		else if((*flag)==2){
+			printf("\nNode is real\n");
+			realnode = (struct node_type_real *)nextaddress;
+			printf("Data : %g",realnode->data);
+			nextaddress = (long *)realnode->nextaddress;
+			printf("\nNext address : %ld\n",realnode->nextaddress);
+		}
+		else if((*flag)==3){
+			printf("\nNode is character\n");
+			charnode = (struct node_type_char *)nextaddress;
+			printf("Data : %c",charnode->data);
+			nextaddress = (long *)charnode->nextaddress;
+			printf("\nNext address : %ld\n",charnode->nextaddress);
+		}
+		else{
+			printf("Unknown flag %d!\n",*flag);
+			break;
+		}
+	}
+}
+
+long insert(long *start){
+	int conti = 1,ntype;
+	long *nextaddress = NULL;
 	struct node_type_int *intnode;
 	struct node_type_real *realnode;
 	struct node_type_char *charnode;
 	while(conti){
-		printf("Which type of node do you want to insert ?\nEnter 1 for integer\n2 for real\n3 for character : ");
+		printf("\nWhich type of node do you want to insert in the list?");
+		printf("\nEnter 1 for integer\n2 for real\n3 for character");
+		printf("\nPress any other key to exit : ");
 		scanf("%d",&ntype);
 		if(ntype==1){
 			intnode = (struct node_type_int *)malloc(sizeof(struct node_type_int));
@@ -67,35 +105,16 @@ void main(){
 			break;
 		}	
 	}
-	nextaddress = start;
-	printf("\nStarting traversal from address %ld\n",(long)nextaddress);
-	while(nextaddress!=0){
-		flag = (int *)nextaddress;
-		if((*flag)==1){
-			printf("\nNode is int\n");
-			intnode = (struct node_type_int *)nextaddress;
-			printf("Data : %ld",intnode->data);
-			nextaddress = (long *)intnode->nextaddress;
-			printf("\nNext address : %ld\n",intnode->nextaddress);
-		}
-		else if((*flag)==2){
-			printf("\nNode is real\n");
-			realnode = (struct node_type_real *)nextaddress;
-			printf("Data : %g",realnode->data);
-			nextaddress = (long *)realnode->nextaddress;
-			printf("\nNext address : %ld\n",realnode->nextaddress);
-		}
-		else if((*flag)==3){
-			printf("\nNode is character\n");
-			charnode = (struct node_type_char *)nextaddress;
-			printf("Data : %c",charnode->data);
-			nextaddress = (long *)charnode->nextaddress;
-			printf("\nNext address : %ld\n",charnode->nextaddress);
-		}
-		else{
-			printf("Unknown flag %d!\n",*flag);
-			break;
-		}
-	}
-	
+	return (long)start;
+}
+
+void main(){
+	long *start=NULL;
+	long insert(long *start);
+	void printlist(long *nextaddress);
+	printf("Welcome to MiscLinkedList!");
+	printf("\n=========================");	
+	printf("\nBefore we proceed, please insert some nodes.");
+	start = (long *)insert(start);
+	printlist(start);
 }
