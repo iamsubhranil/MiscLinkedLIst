@@ -2,13 +2,13 @@
 #include<stdlib.h>
 struct node_type_int {
 	int flag;
-	int data;
+	long data;
 	long nextaddress;
 };
 
 struct node_type_real {
 	int flag;
-	float data;
+	double data;
 	long nextaddress;
 };
 
@@ -36,7 +36,7 @@ void main(){
 				start = (long *)intnode;
 			intnode->flag = 1;
 			printf("Enter int data to store : ");
-			scanf("%d",&intnode->data);
+			scanf("%ld",&intnode->data);
 			intnode->nextaddress = 0;
 			nextaddress = &intnode->nextaddress;
 		}
@@ -48,7 +48,7 @@ void main(){
 				start = (long *)realnode;
 			realnode->flag = 2;
 			printf("Enter real data to store : ");
-			scanf("%f",&realnode->data);
+			scanf("%lf",&realnode->data);
 			realnode->nextaddress = 0;
 			nextaddress = &realnode->nextaddress;
 		}
@@ -75,7 +75,7 @@ void main(){
 		if((*flag)==1){
 			printf("\nNode is int\n");
 			intnode = (struct node_type_int *)nextaddress;
-			printf("Data : %d",intnode->data);
+			printf("Data : %ld",intnode->data);
 			nextaddress = (long *)intnode->nextaddress;
 			printf("\nNext address : %ld\n",intnode->nextaddress);
 		}
