@@ -19,59 +19,49 @@ struct node_type_char {
 };
 
 void main(){
-	int conti = 1,ntype,lastused = 0,*flag;
-	long *start=NULL,prevaddress = 0, *nextaddress;
+	int conti = 1,ntype,*flag;
+	long *start=NULL, *nextaddress = NULL;
 	struct node_type_int *intnode;
 	struct node_type_real *realnode;
 	struct node_type_char *charnode;
 	printf("\nInitializing pointers..\n");
-	nextaddress = (long *)malloc(sizeof(long));
 	while(conti){
 		printf("Which type of node do you want to insert ?\nEnter 1 for integer\n2 for real\n3 for character : ");
 		scanf("%d",&ntype);
 		if(ntype==1){
 			intnode = (struct node_type_int *)malloc(sizeof(struct node_type_int));
-			if(lastused>0){
-				*nextaddress = (long)intnode;
-			}
-			if(start==NULL){
+			if(nextaddress!=NULL)
+				(*nextaddress = (long)intnode);
+			if(start==NULL)
 				start = (long *)intnode;
-			}
 			intnode->flag = 1;
 			printf("Enter int data to store : ");
 			scanf("%d",&intnode->data);
 			intnode->nextaddress = 0;
-			lastused = 1;
 			nextaddress = &intnode->nextaddress;
 		}
 		else if(ntype==2){
 			realnode = (struct node_type_real *)malloc(sizeof(struct node_type_real));
-			if(lastused>0){
-				*nextaddress = (long)realnode;
-			}		
-			if(start==NULL){
+			if(nextaddress!=NULL)
+				(*nextaddress = (long)realnode);		
+			if(start==NULL)
 				start = (long *)realnode;
-			}
 			realnode->flag = 2;
 			printf("Enter real data to store : ");
 			scanf("%f",&realnode->data);
 			realnode->nextaddress = 0;
-			lastused = 2;
 			nextaddress = &realnode->nextaddress;
 		}
 		else if(ntype==3){
 			charnode = (struct node_type_char *)malloc(sizeof(struct node_type_char));
-			if(lastused>0){
-				*nextaddress = (long)charnode;
-			}		
-			if(start==NULL){
+			if(nextaddress!=NULL)
+				(*nextaddress = (long)charnode);
+			if(start==NULL)
 				start = (long *)charnode;
-			}
 			charnode->flag = 3;
 			printf("Enter character data to store : ");
 			scanf(" %c",&charnode->data);
 			charnode->nextaddress = 0;
-			lastused = 3;
 			nextaddress = &charnode->nextaddress;
 		}
 		else{
