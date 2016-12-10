@@ -18,6 +18,10 @@ struct node_type_char {
 	char data;
 };
 
+struct gen_type {
+	int flag;
+	long nextaddress;
+};
 void printlist(long *nextaddress){
 	struct node_type_int *intnode;
 	struct node_type_real *realnode;
