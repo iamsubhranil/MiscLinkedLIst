@@ -26,26 +26,28 @@ void printlist(long *nextaddress){
 	struct node_type_int *intnode;
 	struct node_type_real *realnode;
 	struct node_type_char *charnode;
-	int *flag;
+	int *flag, counter = 0;
 	printf("\nStarting traversal from address %ld\n",(long)nextaddress);
 	while(nextaddress!=0){
 		flag = (int *)nextaddress;
+		printf("\nNode : %d",++counter);
+		printf("\nType : ");
 		if((*flag)==1){
-			printf("\nNode is int\n");
+			printf("int\n");
 			intnode = (struct node_type_int *)nextaddress;
 			printf("Data : %ld",intnode->data);
 			nextaddress = (long *)intnode->nextaddress;
 			printf("\nNext address : %ld\n",intnode->nextaddress);
 		}
 		else if((*flag)==2){
-			printf("\nNode is real\n");
+			printf("real\n");
 			realnode = (struct node_type_real *)nextaddress;
 			printf("Data : %g",realnode->data);
 			nextaddress = (long *)realnode->nextaddress;
 			printf("\nNext address : %ld\n",realnode->nextaddress);
 		}
 		else if((*flag)==3){
-			printf("\nNode is character\n");
+			printf("character\n");
 			charnode = (struct node_type_char *)nextaddress;
 			printf("Data : %c",charnode->data);
 			nextaddress = (long *)charnode->nextaddress;
