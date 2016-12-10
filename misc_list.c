@@ -22,45 +22,55 @@ struct gen_type {
 	int flag;
 	long nextaddress;
 };
-void printlist(long *nextaddress){
+
+long *nextaddress = NULL, *start = NULL, *traversalend =  NULL, dobackup = 0;
+int count = 0;
+
+void printlist(){
 	struct node_type_int *intnode;
 	struct node_type_real *realnode;
 	struct node_type_char *charnode;
 	int *flag, counter = 0;
-	printf("\nStarting traversal from address %ld\n",(long)nextaddress);
-	while(nextaddress!=0){
-		flag = (int *)nextaddress;
-		printf("\nNode : %d",++counter);
-		printf("\nType : ");
-		if((*flag)==1){
-			printf("int\n");
-			intnode = (struct node_type_int *)nextaddress;
-			printf("Data : %ld",intnode->data);
-			nextaddress = (long *)intnode->nextaddress;
-			printf("\nNext address : %ld\n",intnode->nextaddress);
-		}
-		else if((*flag)==2){
-			printf("real\n");
-			realnode = (struct node_type_real *)nextaddress;
-			printf("Data : %g",realnode->data);
-			nextaddress = (long *)realnode->nextaddress;
-			printf("\nNext address : %ld\n",realnode->nextaddress);
-		}
-		else if((*flag)==3){
-			printf("character\n");
-			charnode = (struct node_type_char *)nextaddress;
-			printf("Data : %c",charnode->data);
-			nextaddress = (long *)charnode->nextaddress;
-			printf("\nNext address : %ld\n",charnode->nextaddress);
-		}
-		else{
-			printf("Unknown flag %d!\n",*flag);
-			break;
+	long nextaddress = 0;
+	if(start==NULL){
+		printf("\nList is empty!");
+	}
+	else{
+		nextaddress = (long)start;
+		printf("\nStarting traversal from address %ld\n",(long)nextaddress);
+		while(nextaddress!=0){
+			flag = (int *)nextaddress;
+			printf("\nNode : %d",++counter);
+			printf("\nType : ");
+			if((*flag)==1){
+				printf("int\n");
+				intnode = (struct node_type_int *)nextaddress;
+				printf("Data : %ld",intnode->data);
+				nextaddress = intnode->nextaddress;
+				printf("\nNext address : %ld\n",intnode->nextaddress);
+			}
+			else if((*flag)==2){
+				printf("real\n");
+				realnode = (struct node_type_real *)nextaddress;
+				printf("Data : %g",realnode->data);
+				nextaddress = realnode->nextaddress;
+				printf("\nNext address : %ld\n",realnode->nextaddress);
+			}
+			else if((*flag)==3){
+				printf("character\n");
+				charnode = (struct node_type_char *)nextaddress;
+				printf("Data : %c",charnode->data);
+				nextaddress = charnode->nextaddress;
+				printf("\nNext address : %ld\n",charnode->nextaddress);
+			}
+			else{
+				printf("Unknown flag %d!\n",*flag);
+				break;
+			}
 		}
 	}
 }
-long *nextaddress = NULL, *start = NULL, *traversalend =  NULL, dobackup = 0;
-int count = 0;
+
 void insert(){
 	int conti = 1,ntype;
 	long backupaddress = 0;
@@ -136,6 +146,10 @@ int traverse(int upto){
 	if(upto>count || upto<1){
 		return 0;
 	}
+	if(start==NULL){
+		traversalend = NULL;
+		return 0;
+	}
 	add = (long)start;
 	printf("\nTraversing..");
 	while(c<upto-1){
@@ -149,6 +163,37 @@ int traverse(int upto){
 	return 1;
 }
 
+void delete(int choice){
+	struct gen_type *generic;
+	struct gen_type *nextgen;
+	if(start==NULL){
+		printf("Please insert some nodes first!");
+	}
+	else if(choice>count || choice<1){
+		printf("Invalid position specified!");
+	}
+	else if(choice==1){
+		generic = (struct gen_type *)start;
+		start = (long *)generic->nextaddress;
+		free(generic);
+		count--;
+		printf("\nDeletion successful!");
+	}
+	else{
+		traverse(choice);
+		generic = (struct gen_type *)traversalend;
+		nextgen = (struct gen_type *)generic->nextaddress;
+		generic->nextaddress = nextgen->nextaddress;
+		free(nextgen);
+		count--;
+		printf("\nDeletion successful!");
+	}
+	if(count==0){
+		start = NULL;
+		nextaddress = NULL;
+	}
+}
+
 void menu(){
 	int cont = 1, choice = 0;
 	long *backup = NULL;
@@ -159,30 +204,33 @@ void menu(){
 		printf("\nPress any other key to exit : ");
 		scanf("%d",&choice);
 		if(choice==1){
-			if(count>0){
-				printf("Enter the position you want to insert the node(<=%d) : ",(count+1));
-				scanf("%d",&choice);
-				if(choice==1){
-					backup = start;
-					nextaddress = NULL;
-					start = NULL;
-					insert();
-					*nextaddress = (long)backup;
-				}
-				else if(choice==count+1){
-					insert();
-				}
-				else if(!traverse(choice)){
-					printf("Invalid position specified!\n");
-				}
-				else{
-					nextaddress = traversalend;
-					insert();
-				}
+			printf("Enter the position you want to insert the node(<=%d) : ",(count+1));
+			scanf("%d",&choice);
+			if(choice==1){
+				backup = start;
+				nextaddress = NULL;
+				start = NULL;
+				insert();
+				*nextaddress = (long)(backup==NULL?0:backup);
+			}
+			else if(choice==count+1){
+				insert();
+			}
+			else if(!traverse(choice)){
+				printf("\nInvalid position specified!\n");
+			}
+			else{
+				nextaddress = traversalend;
+				insert();
 			}
 		}
+		else if(choice==2){
+			printf("Enter the position of the node you want to delete(<=%d) : ",count);
+			scanf("%d",&choice);
+			delete(choice);
+		}
 		else if(choice==3){
-			printlist(start);
+			printlist();
 		}
 		else{
 			break;
@@ -193,13 +241,15 @@ void menu(){
 void main(){
 	void insert();
 	void menu();
+	void delete();
 	int traverse(int upto);
-	void printlist(long *nextaddress);
+	void delete(int choice);
+	void printlist();
 	printf("Welcome to MiscLinkedList!");
 	printf("\n=========================");	
-	while(count==0){
-		printf("\nBefore we proceed, please insert some nodes.");
-		insert();
-	}
+	//while(count==0){
+	//	printf("\nBefore we proceed, please insert some nodes.");
+	//	insert();
+	//}
 	menu();
 }
