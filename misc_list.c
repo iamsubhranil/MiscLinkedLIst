@@ -59,7 +59,8 @@ void printlist(long *nextaddress){
 		}
 	}
 }
-long *nextaddress = NULL, *start = NULL;
+long *nextaddress = NULL, *start = NULL, *traversalend =  NULL;
+int count = 0;
 void insert(){
 	int conti = 1,ntype;
 	struct node_type_int *intnode;
@@ -81,6 +82,7 @@ void insert(){
 			scanf("%ld",&intnode->data);
 			intnode->nextaddress = 0;
 			nextaddress = &intnode->nextaddress;
+			count++;
 		}
 		else if(ntype==2){
 			realnode = (struct node_type_real *)malloc(sizeof(struct node_type_real));
@@ -93,6 +95,7 @@ void insert(){
 			scanf("%lf",&realnode->data);
 			realnode->nextaddress = 0;
 			nextaddress = &realnode->nextaddress;
+			count++;
 		}
 		else if(ntype==3){
 			charnode = (struct node_type_char *)malloc(sizeof(struct node_type_char));
@@ -105,6 +108,7 @@ void insert(){
 			scanf(" %c",&charnode->data);
 			charnode->nextaddress = 0;
 			nextaddress = &charnode->nextaddress;
+			count++;
 		}
 		else{
 			break;
@@ -112,14 +116,39 @@ void insert(){
 	}
 }
 
+int traverse(int upto){
+	int c = 0;
+	struct gen_type *generic;
+	long add = *start;
+	if(upto>count){
+		return 2;
+	}
+	while(add!=0){
+		generic = (struct gen_type *)add;
+		add = generic->nextaddress;
+		c++;
+		if(c==upto){
+			traversalend = (long *)add;
+			return 0;
+		}
+	}
+	return 1;
+}
+
+void menu(){
+	printf("\nPress 1 to insert a node");
+	printf("\nPress 2 to delete a node");
+	printf("\nPress 3 to view nodes : ");
+}
+
 void main(){
 	void insert();
+	void menu();
+	int traverse(int upto);
 	void printlist(long *nextaddress);
 	printf("Welcome to MiscLinkedList!");
 	printf("\n=========================");	
 	printf("\nBefore we proceed, please insert some nodes.");
 	insert();
-	printlist(start);
-	insert();
-	printlist(start);
+	menu();
 }
