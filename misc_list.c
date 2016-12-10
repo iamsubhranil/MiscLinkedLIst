@@ -2,20 +2,20 @@
 #include<stdlib.h>
 struct node_type_int {
 	int flag;
-	long data;
 	long nextaddress;
+	long data;
 };
 
 struct node_type_real {
 	int flag;
-	double data;
 	long nextaddress;
+	double data;
 };
 
 struct node_type_char {
 	int flag;
-	char data;
 	long nextaddress;
+	char data;
 };
 
 void printlist(long *nextaddress){
