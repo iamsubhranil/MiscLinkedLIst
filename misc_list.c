@@ -53,10 +53,9 @@ void printlist(long *nextaddress){
 		}
 	}
 }
-
-long insert(long *start){
+long *nextaddress = NULL, *start = NULL;
+void insert(){
 	int conti = 1,ntype;
-	long *nextaddress = NULL;
 	struct node_type_int *intnode;
 	struct node_type_real *realnode;
 	struct node_type_char *charnode;
@@ -105,16 +104,16 @@ long insert(long *start){
 			break;
 		}	
 	}
-	return (long)start;
 }
 
 void main(){
-	long *start=NULL;
-	long insert(long *start);
+	void insert();
 	void printlist(long *nextaddress);
 	printf("Welcome to MiscLinkedList!");
 	printf("\n=========================");	
 	printf("\nBefore we proceed, please insert some nodes.");
-	start = (long *)insert(start);
+	insert();
+	printlist(start);
+	insert();
 	printlist(start);
 }
