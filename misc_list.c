@@ -27,11 +27,11 @@ long *nextaddress = NULL, *start = NULL, *traversalend =  NULL, dobackup = 0;
 int count = 0;
 
 void printlist(){
-	struct node_type_int *intnode;
-	struct node_type_real *realnode;
-	struct node_type_char *charnode;
-	int *flag, counter = 0;
-	long nextaddress = 0;
+	struct gen_type *generic;
+	int flag, counter = 0;
+	long nextaddress = 0, dataaddress = 0, *longdata = NULL;
+	char *chardata = NULL;
+	double *doubledata = NULL;
 	if(start==NULL){
 		printf("\nList is empty!");
 	}
@@ -39,34 +39,31 @@ void printlist(){
 		nextaddress = (long)start;
 		printf("\nStarting traversal from address %ld\n",(long)nextaddress);
 		while(nextaddress!=0){
-			flag = (int *)nextaddress;
+			generic = (struct gen_type *)nextaddress;
 			printf("\nNode : %d",++counter);
-			printf("\nType : ");
-			if((*flag)==1){
-				printf("int\n");
-				intnode = (struct node_type_int *)nextaddress;
-				printf("Data : %ld",intnode->data);
-				nextaddress = intnode->nextaddress;
-				printf("\nNext address : %ld\n",intnode->nextaddress);
+			flag = generic->flag;
+			dataaddress = ((long)(&generic->nextaddress)) + sizeof(long);
+			if(flag==1){
+				printf("\nType : int");
+				longdata = (long *)dataaddress;
+				printf("\nData : %ld",*longdata);
 			}
-			else if((*flag)==2){
-				printf("real\n");
-				realnode = (struct node_type_real *)nextaddress;
-				printf("Data : %g",realnode->data);
-				nextaddress = realnode->nextaddress;
-				printf("\nNext address : %ld\n",realnode->nextaddress);
+			else if(flag==2){
+				printf("\nType : real");
+				doubledata = (double *)dataaddress;
+				printf("\nData : %g",*doubledata);
 			}
-			else if((*flag)==3){
-				printf("character\n");
-				charnode = (struct node_type_char *)nextaddress;
-				printf("Data : %c",charnode->data);
-				nextaddress = charnode->nextaddress;
-				printf("\nNext address : %ld\n",charnode->nextaddress);
+			else if(flag==3){
+				printf("\nType : character");
+				chardata = (char *)dataaddress;
+				printf("\nData : %c",*chardata);
 			}
 			else{
-				printf("Unknown flag %d!\n",*flag);
+				printf("Unknown flag %d!\nFatal error!\n",flag);
 				break;
 			}
+			nextaddress = generic->nextaddress;
+			printf("\n");
 		}
 	}
 }
