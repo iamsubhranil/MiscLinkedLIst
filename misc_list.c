@@ -191,9 +191,32 @@ void delete(int choice){
 	}
 }
 
+void decideinsert(){
+	long *backup = NULL;
+	int choice = 0;
+	printf("Enter the position you want to insert the node(<=%d) : ",(count+1));
+	scanf("%d",&choice);
+	if(choice==1){
+		backup = start;
+		nextaddress = NULL;
+		start = NULL;
+		insert();
+		*nextaddress = (long)(backup==NULL?0:backup);
+	}
+	else if(choice==count+1){
+		insert();
+	}
+	else if(!traverse(choice)){
+		printf("\nInvalid position specified!\n");
+	}
+	else{
+		nextaddress = traversalend;
+		insert();
+	}
+}
+
 void menu(){
 	int cont = 1, choice = 0;
-	long *backup = NULL;
 	while(cont){
 		printf("\nPress 1 to insert a node");
 		printf("\nPress 2 to delete a node");
@@ -201,25 +224,7 @@ void menu(){
 		printf("\nPress any other key to exit : ");
 		scanf("%d",&choice);
 		if(choice==1){
-			printf("Enter the position you want to insert the node(<=%d) : ",(count+1));
-			scanf("%d",&choice);
-			if(choice==1){
-				backup = start;
-				nextaddress = NULL;
-				start = NULL;
-				insert();
-				*nextaddress = (long)(backup==NULL?0:backup);
-			}
-			else if(choice==count+1){
-				insert();
-			}
-			else if(!traverse(choice)){
-				printf("\nInvalid position specified!\n");
-			}
-			else{
-				nextaddress = traversalend;
-				insert();
-			}
+			decideinsert();
 		}
 		else if(choice==2){
 			printf("Enter the position of the node you want to delete(<=%d) : ",count);
@@ -242,11 +247,8 @@ void main(){
 	int traverse(int upto);
 	void delete(int choice);
 	void printlist();
+	void decideinsert();
 	printf("Welcome to MiscLinkedList!");
 	printf("\n=========================");	
-	//while(count==0){
-	//	printf("\nBefore we proceed, please insert some nodes.");
-	//	insert();
-	//}
 	menu();
 }
